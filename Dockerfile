@@ -1,4 +1,5 @@
 FROM debian:12-slim
+LABEL org.opencontainers.image.source="https://github.com/AnimMouse/wgcf-connector"
 WORKDIR /app
 RUN apt-get -qq update && apt-get -qq install wget jq && mkdir /run/dbus /app/output
 RUN wget -O /usr/share/keyrings/cloudflare-warp-archive-keyring.asc https://pkg.cloudflareclient.com/pubkey.gpg && \

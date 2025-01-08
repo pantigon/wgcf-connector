@@ -22,7 +22,7 @@ Endpoint = $(jq -r .endpoints[0].v4 < /var/lib/cloudflare-warp/conf.json)
 #Endpoint = $(jq -r .endpoints[0].v6 < /var/lib/cloudflare-warp/conf.json)
 
 #Endpoint = $(jq -r .endpoints[1].v4 < /var/lib/cloudflare-warp/conf.json)
-#Endpoint = $(jq -r .endpoints[1].v6 < /var/lib/cloudflare-warp/conf.json
+#Endpoint = $(jq -r .endpoints[1].v6 < /var/lib/cloudflare-warp/conf.json)
 #Endpoint = $(jq -r .endpoints[2].v4 < /var/lib/cloudflare-warp/conf.json)
 #Endpoint = $(jq -r .endpoints[2].v6 < /var/lib/cloudflare-warp/conf.json)
 #Endpoint = $(jq -r .endpoints[3].v4 < /var/lib/cloudflare-warp/conf.json)
