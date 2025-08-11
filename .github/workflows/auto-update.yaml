@@ -1,0 +1,41 @@
+name: Auto update Cloudflare WARP
+on:
+  schedule:
+    - cron: '7 11 * * 0'
+  workflow_dispatch:
+  
+concurrency:
+  group: ${{ github.workflow }}
+  
+jobs:
+  update:
+    permissions:
+      actions: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Get Cloudflare WARP latest version
+        id: cloudflare-warp
+        run: echo version=$(curl -s https://pkg.cloudflareclient.com/dists/bookworm/main/binary-amd64/Packages | awk '/^Version:/ {print $2}') >> $GITHUB_OUTPUT
+        
+      - name: Update Cloudflare WARP version
+        run: sed -i "s/^ARG VERSION=.*/ARG VERSION=$version/" Dockerfile
+        env:
+          version: ${{ steps.cloudflare-warp.outputs.version }}
+          
+      - name: Add and commit Dockerfile
+        id: add-and-commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: Dockerfile
+          default_author: github_actions
+          message: 'chore: Update Cloudflare WARP to ${{ steps.cloudflare-warp.outputs.version }}'
+          
+      - name: Build and push image
+        if: steps.add-and-commit.outputs.committed == 'true'
+        run: gh workflow run build-and-push.yaml
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
