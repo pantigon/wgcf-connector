@@ -3,6 +3,7 @@ dbus-daemon --system
 /bin/warp-svc &
 sleep 5s
 warp-cli --accept-tos connector new "$1"
+sleep 5s
 cat > /app/output/wgcf-connector-$(jq -r .registration_id[0] < /var/lib/cloudflare-warp/reg.json).conf << EOL
 # Registration ID: $(jq -r .registration_id[0] < /var/lib/cloudflare-warp/reg.json)
 # Organization: $(jq -r .account.organization < /var/lib/cloudflare-warp/conf.json)
